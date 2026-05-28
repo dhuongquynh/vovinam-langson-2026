@@ -102,19 +102,41 @@
     if (img.complete && img.naturalWidth === 0) showFallback();
   });
 
-  /* ---------- Lead form: submit via fetch (no-cors) for reliable Google Forms delivery ---------- */
+  /* ---------- Lead form: POST đến Cloudflare Pages Function, nhận JSON, bắn Telegram ---------- */
   document.querySelectorAll('.lead-card form').forEach((form) => {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const card = form.closest('.lead-card');
+      const btn = form.querySelector('button[type="submit"]');
+      const originalBtnText = btn ? btn.textContent : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Đang gửi…';
+      }
+
       const formData = new FormData(form);
-      fetch(form.action, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData,
-      }).finally(() => {
-        if (card) card.classList.add('sent');
-      });
+      try {
+        const resp = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await resp.json().catch(() => ({ ok: false }));
+        if (resp.ok && result.ok) {
+          if (card) card.classList.add('sent');
+        } else {
+          alert('Gửi thông tin chưa thành công. Bố mẹ vui lòng nhắn Zalo Thầy Hiếu 0962 382 233 để Bộ môn liên hệ lại.');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalBtnText;
+          }
+        }
+      } catch (err) {
+        alert('Mất kết nối. Bố mẹ vui lòng thử lại hoặc nhắn Zalo Thầy Hiếu 0962 382 233.');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalBtnText;
+        }
+      }
     });
   });
 
