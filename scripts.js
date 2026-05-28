@@ -102,11 +102,19 @@
     if (img.complete && img.naturalWidth === 0) showFallback();
   });
 
-  /* ---------- Lead form thanks state ---------- */
+  /* ---------- Lead form: submit via fetch (no-cors) for reliable Google Forms delivery ---------- */
   document.querySelectorAll('.lead-card form').forEach((form) => {
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
       const card = form.closest('.lead-card');
-      if (card) setTimeout(() => card.classList.add('sent'), 250);
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData,
+      }).finally(() => {
+        if (card) card.classList.add('sent');
+      });
     });
   });
 
