@@ -1,0 +1,23 @@
+# Local-only tools (admin uploader needs Python server, doesn't work on Cloudflare)
+admin.html
+upload-server.py
+
+# Server logs
+server-out.log
+server-err.log
+server.log
+
+# Dev artifacts
+plans/
+dist/
+.playwright-mcp/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Test image uploads
+img/test-*.*
