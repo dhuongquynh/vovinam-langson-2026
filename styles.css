@@ -93,8 +93,49 @@ section.dark .eyebrow::before, section.dark-grad .eyebrow::before, .hero .eyebro
   transition:transform .15s, box-shadow .15s;
 }
 .nav .nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,215,0,.4); }
-@media (max-width:860px){ .nav .links { display:none; } }
-@media (max-width:720px){ .nav .brand .nm { font-size:16px; } .nav .nav-cta { padding:9px 14px; } }
+/* Hamburger toggle (mobile menu) */
+.nav-toggle {
+  display:none; background:rgba(255,255,255,.12);
+  width:44px; height:44px; border-radius:8px;
+  border:1px solid rgba(255,255,255,.2);
+  cursor:pointer; align-items:center; justify-content:center;
+  margin-left:8px;
+}
+.nav-toggle span {
+  display:block; width:22px; height:2px; background:#fff;
+  position:relative; transition:transform .25s, opacity .2s;
+}
+.nav-toggle span::before, .nav-toggle span::after {
+  content:""; position:absolute; left:0; right:0; height:2px; background:#fff;
+  transition:transform .25s;
+}
+.nav-toggle span::before { top:-7px; }
+.nav-toggle span::after { top:7px; }
+.nav.menu-open .nav-toggle span { background:transparent; }
+.nav.menu-open .nav-toggle span::before { top:0; transform:rotate(45deg); }
+.nav.menu-open .nav-toggle span::after { top:0; transform:rotate(-45deg); }
+
+@media (max-width:860px){
+  .nav-toggle { display:inline-flex; }
+  .nav .links {
+    position:absolute; top:100%; left:0; right:0;
+    background:var(--xanh-d); display:flex; flex-direction:column;
+    gap:0; padding:10px 0; border-top:1px solid rgba(255,255,255,.1);
+    box-shadow:0 12px 22px rgba(0,0,0,.3);
+    transform:translateY(-12px); opacity:0; pointer-events:none;
+    transition:transform .25s, opacity .2s;
+    z-index:60;
+  }
+  .nav.menu-open .links { transform:translateY(0); opacity:1; pointer-events:auto; }
+  .nav .links a { padding:14px 24px; font-size:15px; border-bottom:1px solid rgba(255,255,255,.06); }
+  .nav .links a::after { display:none; }
+}
+@media (max-width:720px){
+  .nav .brand .nm { font-size:15px; }
+  .nav .brand .nm small { display:none; }
+  .nav .brand img { height:40px; width:40px; }
+  .nav .nav-cta { padding:8px 12px; font-size:12px; }
+}
 
 /* ---------- BUTTONS ---------- */
 .btn {
@@ -162,7 +203,7 @@ section.dark .eyebrow::before, section.dark-grad .eyebrow::before, .hero .eyebro
 
 /* Hero photo composition (right side replaces lead-card on desktop wide) */
 .hero-photos {
-  position:relative; min-height:560px;
+  position:relative; min-height:560px; width:100%;
 }
 .hero-photos .ph-main {
   position:absolute; top:0; right:0; width:78%; aspect-ratio:4/5;
@@ -260,11 +301,15 @@ section.dark .eyebrow::before, section.dark-grad .eyebrow::before, .hero .eyebro
   .hero .wrap { grid-template-columns:1fr; gap:36px; padding-top:48px; padding-bottom:60px; }
   .hero h1 { font-size:44px; }
   .hero .sub { font-size:16px; }
-  .hero-photos { min-height:420px; max-width:480px; margin:0 auto; }
+  .hero-photos { min-height:480px; max-width:480px; margin:0 auto; width:100%; }
 }
 @media (max-width:520px){
   .hero h1 { font-size:36px; }
-  .hero-photos { min-height:340px; }
+  .hero-photos { min-height:420px; width:100%; max-width:none; padding:0 8px; }
+  .hero-photos .ph-main { width:82%; }
+  .hero-photos .ph-side { width:48%; bottom:10px; left:0; }
+  .hero-photos .ph-tiny { width:36%; top:90px; left:8px; }
+  .hero-photos .ph-main.landscape { width:96%; top:20px; }
   .sticker, .sticker.lg { width:78px; height:78px; font-size:12px; }
   .hero-photos .sticker-deal b { font-size:18px; }
 }

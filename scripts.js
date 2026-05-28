@@ -165,6 +165,18 @@
     }
   });
 
+  /* ---------- Mobile nav hamburger toggle ---------- */
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.querySelector('.nav');
+  if (navToggle && nav) {
+    navToggle.addEventListener('click', () => {
+      nav.classList.toggle('menu-open');
+    });
+    nav.querySelectorAll('.links a').forEach((a) => {
+      a.addEventListener('click', () => nav.classList.remove('menu-open'));
+    });
+  }
+
   /* ---------- Smooth scroll for anchor links ---------- */
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
