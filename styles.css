@@ -562,19 +562,22 @@ section.kem .marquee::after  { background:linear-gradient(270deg, var(--kem), tr
 @keyframes scroll-x { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 @keyframes scroll-x-rev { from{transform:translateX(-50%)} to{transform:translateX(0)} }
 
-/* Touch devices: disable auto-scroll, enable manual swipe */
-@media (hover:none) and (pointer:coarse) {
+/* Touch / small screens: disable auto-scroll, enable manual swipe */
+@media (max-width: 860px) {
   .marquee {
-    overflow-x:auto;
+    overflow-x:auto !important;
     scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;
     scrollbar-width:none;
+    padding-left:20px;
+    padding-right:20px;
   }
   .marquee::-webkit-scrollbar { display:none; }
-  .marquee::before, .marquee::after { display:none; }
+  .marquee::before, .marquee::after { display:none !important; }
   .marquee-track {
     animation:none !important;
-    width:auto;
+    transform:none !important;
+    width:max-content;
   }
   .marquee .shot { scroll-snap-align:center; }
 }
